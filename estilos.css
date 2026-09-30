@@ -1,0 +1,104 @@
+/*
+ * Tokens de las apps de basket-app.com: la escala neutra cálida, el rojo del
+ * Manual de Identidad, la barra lateral navy, el radio y las sombras. Salieron
+ * del Portal (basketProd src/app/globals.css) y de Facturación. Solo claro.
+ *
+ * Se importa después de Tailwind 4:
+ *   @import 'tailwindcss';
+ *   @import 'basket-tv-ui/estilos.css';
+ */
+
+/* Las clases del marco viven en el paquete: Tailwind tiene que leerlas acá. */
+@source './dist';
+
+:root {
+  --n-50: #faf9f8;
+  --n-100: #f4f2f1;
+  --n-200: #e7e4e2;
+  --n-300: #d6d1ce;
+  --n-400: #a8a09d;
+  --n-500: #847b78;
+  --n-600: #6b615f;
+  --n-700: #4a423f;
+  --n-800: #2e2826;
+  --n-900: #1c0d10;
+
+  --accent: #e31b23;
+  --accent-strong: #c0141b;
+  --accent-soft: #fff0f1;
+  --accent-border: #f4cdcf;
+
+  --ok: #1f7a4d;
+  --ok-soft: #eaf6ef;
+  --ok-border: #bfe3cf;
+
+  --navy: #07122b;
+  --navy-line: #10203f;
+  --navy-hover: #132347;
+  --navy-text: #9eb0cc;
+  --navy-item: #0d1731;
+  --navy-control: #0c1c3f;
+  --navy-control-line: #1c3057;
+  --navy-control-hover: #2a4474;
+
+  --background: var(--n-50);
+  --background-soft: var(--n-100);
+  --foreground: var(--n-900);
+  --surface: #ffffff;
+  --muted: var(--n-600);
+  --border: var(--n-200);
+  --panel-radius: 10px;
+  --shadow-rest: 0 1px 2px rgba(28, 13, 16, 0.04), 0 1px 3px rgba(28, 13, 16, 0.06);
+  --shadow-lift: 0 10px 30px rgba(28, 13, 16, 0.1);
+
+  /* Next las pisa con next/font (variable: '--font-poppins', etc.). */
+  --font-poppins: 'Poppins', system-ui, sans-serif;
+  --font-oswald: 'Oswald', var(--font-poppins);
+  --font-plex-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+
+  --color-n-50: var(--n-50);
+  --color-n-100: var(--n-100);
+  --color-n-200: var(--n-200);
+  --color-n-300: var(--n-300);
+  --color-n-400: var(--n-400);
+  --color-n-500: var(--n-500);
+  --color-n-600: var(--n-600);
+  --color-n-700: var(--n-700);
+  --color-n-800: var(--n-800);
+  --color-n-900: var(--n-900);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-border: var(--accent-border);
+
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-oswald);
+  --font-mono: var(--font-plex-mono);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--background);
+    background-image: linear-gradient(180deg, #ffffff 0%, var(--n-50) 100%);
+    color: var(--foreground);
+    font-family: var(--font-poppins);
+  }
+
+  ::selection {
+    background: rgba(227, 27, 35, 0.18);
+  }
+}
