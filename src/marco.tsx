@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { retenerFoco } from './foco';
 import { Icono } from './iconos';
 import { unir } from './unir';
 
@@ -35,8 +36,6 @@ const ANCHOS = { normal: 'max-w-6xl', amplio: 'max-w-none' } as const;
 
 const BOTON_SOBRE_NAVY =
   'inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[var(--navy-control-line)] bg-[var(--navy-control)] text-[var(--navy-text)] transition hover:border-[var(--navy-control-hover)] hover:text-white';
-
-const ENFOCABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
 
 /**
  * The shell every basket-app.com app shares: the navy sidebar with the brand,
@@ -133,17 +132,22 @@ export function Marco({
   );
 }
 
-/** Portal's ghost logout button, as a link: the Portal ends the shared session. */
-export function BotonDeSalir({ href, enlace: Enlace = EnlaceNativo }: { href: string; enlace?: ComponenteDeEnlace }) {
+/**
+ * Portal's ghost logout button, as a link. `href` is always `${portalUrl}/logout`:
+ * a full navigation to the Portal's route handler, which ends the shared session
+ * and clears the cookies of every subdomain. Always a plain `<a>`: a client
+ * link could prefetch it and sign the person out by itself.
+ */
+export function BotonDeSalir({ href }: { href: string }) {
   return (
-    <Enlace
+    <a
       href={href}
       aria-label="Cerrar sesión"
       title="Cerrar sesión"
       className="inline-flex size-11 items-center justify-center rounded-2xl text-[var(--muted)] transition hover:bg-[var(--background-soft)] hover:text-[var(--foreground)]"
     >
       <Icono nombre="salir" className="size-4" />
-    </Enlace>
+    </a>
   );
 }
 
@@ -334,19 +338,4 @@ function MenuMovil({
         )}
     </div>
   );
-}
-
-function retenerFoco(evento: KeyboardEvent, panel: HTMLElement) {
-  const enfocables = [...panel.querySelectorAll<HTMLElement>(ENFOCABLES)];
-  const primero = enfocables[0];
-  const ultimo = enfocables[enfocables.length - 1];
-  if (!primero || !ultimo) return;
-  const activo = document.activeElement;
-  if (evento.shiftKey && (activo === primero || !panel.contains(activo))) {
-    evento.preventDefault();
-    ultimo.focus();
-  } else if (!evento.shiftKey && (activo === ultimo || !panel.contains(activo))) {
-    evento.preventDefault();
-    primero.focus();
-  }
 }

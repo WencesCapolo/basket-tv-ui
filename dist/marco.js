@@ -2,6 +2,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useId, useRef, useState, } from 'react';
 import { createPortal } from 'react-dom';
+import { retenerFoco } from './foco';
 import { Icono } from './iconos';
 import { unir } from './unir';
 const TEXTO_VOLVER = 'Volver';
@@ -9,7 +10,6 @@ const TEXTO_DEL_LANZADOR = 'Elegir aplicación';
 const CLAVE_DE_COMPACTA = 'basket-tv-ui.barra-lateral.compacta';
 const ANCHOS = { normal: 'max-w-6xl', amplio: 'max-w-none' };
 const BOTON_SOBRE_NAVY = 'inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[var(--navy-control-line)] bg-[var(--navy-control)] text-[var(--navy-text)] transition hover:border-[var(--navy-control-hover)] hover:text-white';
-const ENFOCABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])';
 /**
  * The shell every basket-app.com app shares: the navy sidebar with the brand,
  * the sections and "Elegir aplicación" (collapsible, a drawer below lg); the
@@ -20,9 +20,14 @@ export function Marco({ children, nombreDeApp, secciones = [], lanzadorUrl = nul
     const marca = _jsx(Marca, { logo: logo, nombreDeApp: nombreDeApp });
     return (_jsxs("div", { className: "flex min-h-screen", children: [_jsxs("aside", { className: unir('sticky top-0 hidden h-screen shrink-0 flex-col overflow-y-auto border-r border-[var(--navy-line)] bg-[var(--navy)] transition-[width] lg:flex', compacta ? 'w-[4.25rem]' : 'w-72'), children: [_jsxs("div", { className: unir('flex items-center border-b border-[var(--navy-line)] py-7', compacta ? 'justify-center px-2' : 'justify-between gap-3 px-6'), children: [!compacta && marca, _jsx("button", { type: "button", onClick: () => setCompacta(!compacta), "aria-label": compacta ? 'Mostrar navegación' : 'Compactar navegación', title: compacta ? 'Mostrar navegación' : 'Compactar navegación', className: BOTON_SOBRE_NAVY, children: _jsx(Icono, { nombre: compacta ? 'expandir' : 'compactar', className: "size-4" }) })] }), _jsxs("div", { className: unir('flex flex-1 flex-col justify-between gap-6 py-6', compacta ? 'px-2' : 'px-5'), children: [_jsx(NavegacionLateral, { secciones: secciones, enlace: enlace, compacta: compacta }), lanzadorUrl && _jsx(EnlaceAlLanzador, { href: lanzadorUrl, compacta: compacta })] })] }), _jsxs("div", { className: "flex min-w-0 flex-1 flex-col", children: [_jsx("header", { className: "sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(255,255,255,0.88)] backdrop-blur-md", children: _jsxs("div", { className: "flex h-[68px] items-center gap-4 px-4 sm:h-20 sm:px-6 lg:px-8", children: [lanzadorUrl && (_jsx("a", { href: lanzadorUrl, "aria-label": TEXTO_VOLVER, title: TEXTO_VOLVER, className: "inline-flex items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]", children: _jsx(Icono, { nombre: "volver", className: "size-5" }) })), _jsxs("div", { className: "flex items-center gap-3 lg:hidden", children: [secciones.length > 0 && (_jsx(MenuMovil, { marca: marca, secciones: secciones, lanzadorUrl: lanzadorUrl, enlace: enlace })), _jsx("img", { src: logoEnCabecera, alt: "Basket.tv", className: "h-7 w-auto" })] }), _jsx("div", { className: "ml-auto flex items-center gap-4 sm:gap-5", children: cabecera })] }) }), _jsx("main", { className: "flex-1 px-4 py-6 sm:px-6 lg:px-8", children: _jsx("div", { className: unir('mx-auto flex w-full flex-col gap-6', ANCHOS[ancho]), children: children }) })] })] }));
 }
-/** Portal's ghost logout button, as a link: the Portal ends the shared session. */
-export function BotonDeSalir({ href, enlace: Enlace = EnlaceNativo }) {
-    return (_jsx(Enlace, { href: href, "aria-label": "Cerrar sesi\u00F3n", title: "Cerrar sesi\u00F3n", className: "inline-flex size-11 items-center justify-center rounded-2xl text-[var(--muted)] transition hover:bg-[var(--background-soft)] hover:text-[var(--foreground)]", children: _jsx(Icono, { nombre: "salir", className: "size-4" }) }));
+/**
+ * Portal's ghost logout button, as a link. `href` is always `${portalUrl}/logout`:
+ * a full navigation to the Portal's route handler, which ends the shared session
+ * and clears the cookies of every subdomain. Always a plain `<a>`: a client
+ * link could prefetch it and sign the person out by itself.
+ */
+export function BotonDeSalir({ href }) {
+    return (_jsx("a", { href: href, "aria-label": "Cerrar sesi\u00F3n", title: "Cerrar sesi\u00F3n", className: "inline-flex size-11 items-center justify-center rounded-2xl text-[var(--muted)] transition hover:bg-[var(--background-soft)] hover:text-[var(--foreground)]", children: _jsx(Icono, { nombre: "salir", className: "size-4" }) }));
 }
 function EnlaceNativo(props) {
     return _jsx("a", { ...props });
@@ -108,20 +113,4 @@ function MenuMovil({ marca, secciones, lanzadorUrl, enlace, }) {
                                 if (evento.target.closest('a'))
                                     setAbierto(false);
                             }, children: [_jsxs("div", { className: "flex items-start justify-between gap-3 border-b border-[var(--navy-line)] px-6 py-7", children: [marca, _jsx("button", { type: "button", onClick: () => setAbierto(false), "aria-label": "Cerrar navegaci\u00F3n", className: BOTON_SOBRE_NAVY, children: _jsx(Icono, { nombre: "cerrar", className: "size-4" }) })] }), _jsxs("div", { className: "flex flex-1 flex-col justify-between gap-6 px-5 py-6", children: [_jsx(NavegacionLateral, { secciones: secciones, enlace: enlace }), lanzadorUrl && _jsx(EnlaceAlLanzador, { href: lanzadorUrl })] })] })] }), document.body)] }));
-}
-function retenerFoco(evento, panel) {
-    const enfocables = [...panel.querySelectorAll(ENFOCABLES)];
-    const primero = enfocables[0];
-    const ultimo = enfocables[enfocables.length - 1];
-    if (!primero || !ultimo)
-        return;
-    const activo = document.activeElement;
-    if (evento.shiftKey && (activo === primero || !panel.contains(activo))) {
-        evento.preventDefault();
-        ultimo.focus();
-    }
-    else if (!evento.shiftKey && (activo === ultimo || !panel.contains(activo))) {
-        evento.preventDefault();
-        primero.focus();
-    }
 }

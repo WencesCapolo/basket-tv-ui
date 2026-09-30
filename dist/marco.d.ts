@@ -38,9 +38,13 @@ export declare function Marco({ children, nombreDeApp, secciones, lanzadorUrl, c
     /** Red logo, for the white header below lg. */
     logoEnCabecera?: string;
 }): import("react").JSX.Element;
-/** Portal's ghost logout button, as a link: the Portal ends the shared session. */
-export declare function BotonDeSalir({ href, enlace: Enlace }: {
+/**
+ * Portal's ghost logout button, as a link. `href` is always `${portalUrl}/logout`:
+ * a full navigation to the Portal's route handler, which ends the shared session
+ * and clears the cookies of every subdomain. Always a plain `<a>`: a client
+ * link could prefetch it and sign the person out by itself.
+ */
+export declare function BotonDeSalir({ href }: {
     href: string;
-    enlace?: ComponenteDeEnlace;
 }): import("react").JSX.Element;
 export {};

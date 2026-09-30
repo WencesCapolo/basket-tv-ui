@@ -18,3 +18,10 @@ export function urlDelLanzador(portalUrl) {
     const puerto = url.port ? `:${url.port}` : '';
     return `${url.protocol}//${apex}${puerto}`;
 }
+/**
+ * El formulario de Solicitud de acceso vive en el Portal para todas las apps;
+ * `app` dice cuál se pide. Quien entra a una app sin Acceso va acá.
+ */
+export function urlDeSolicitud(portalUrl, app) {
+    return `${portalUrl.replace(/\/+$/, '')}/no-access?app=${encodeURIComponent(app)}`;
+}
