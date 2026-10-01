@@ -11,9 +11,9 @@ import {
   type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { retenerFoco } from './foco';
-import { Icono } from './iconos';
-import { unir } from './unir';
+import { retenerFoco } from './foco.js';
+import { Icono } from './iconos.js';
+import { unir } from './unir.js';
 
 export interface EnlaceDeNavegacion {
   readonly clave: string;

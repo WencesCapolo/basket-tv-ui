@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal, useFormStatus } from 'react-dom';
-import { retenerFoco } from './foco';
-import { Icono } from './iconos';
-import { unir } from './unir';
+import { retenerFoco } from './foco.js';
+import { Icono } from './iconos.js';
+import { unir } from './unir.js';
 
 export interface OpcionDeRol {
   readonly valor: string;

@@ -2,9 +2,9 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { createPortal, useFormStatus } from 'react-dom';
-import { retenerFoco } from './foco';
-import { Icono } from './iconos';
-import { unir } from './unir';
+import { retenerFoco } from './foco.js';
+import { Icono } from './iconos.js';
+import { unir } from './unir.js';
 // Se abre sola una vez por conjunto de pendientes y por pestaña. Cerrarla es
 // local: no toca ninguna Solicitud, así que nadie más deja de verla.
 const PREFIJO_DE_ABIERTAS = 'basket-tv-ui.solicitudes.abiertas:';

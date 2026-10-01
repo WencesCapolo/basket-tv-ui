@@ -1,4 +1,4 @@
-import { unir } from './unir';
+import { unir } from './unir.js';
 
 // Los íconos de lucide que usa el marco, copiados como trazos: el paquete no
 // arrastra una dependencia de íconos. Los de cada sección los pone cada app.

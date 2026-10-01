@@ -2,9 +2,9 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useEffect, useId, useRef, useState, } from 'react';
 import { createPortal } from 'react-dom';
-import { retenerFoco } from './foco';
-import { Icono } from './iconos';
-import { unir } from './unir';
+import { retenerFoco } from './foco.js';
+import { Icono } from './iconos.js';
+import { unir } from './unir.js';
 const TEXTO_VOLVER = 'Volver';
 const TEXTO_DEL_LANZADOR = 'Elegir aplicación';
 const CLAVE_DE_COMPACTA = 'basket-tv-ui.barra-lateral.compacta';

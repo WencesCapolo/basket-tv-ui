@@ -1,5 +1,5 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { unir } from './unir';
+import { unir } from './unir.js';
 // Los íconos de lucide que usa el marco, copiados como trazos: el paquete no
 // arrastra una dependencia de íconos. Los de cada sección los pone cada app.
 const TRAZOS = {

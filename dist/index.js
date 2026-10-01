@@ -1,5 +1,5 @@
-export { CampanaDeSolicitudes, } from './campana-de-solicitudes';
-export { ChipDeUsuario } from './chip-de-usuario';
-export { urlDeSolicitud, urlDelLanzador } from './lanzador';
-export { BotonDeSalir, Marco } from './marco';
-export { unir } from './unir';
+export { CampanaDeSolicitudes, } from './campana-de-solicitudes.js';
+export { ChipDeUsuario } from './chip-de-usuario.js';
+export { urlDeSolicitud, urlDelLanzador } from './lanzador.js';
+export { BotonDeSalir, Marco } from './marco.js';
+export { unir } from './unir.js';
