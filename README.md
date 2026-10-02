@@ -14,7 +14,7 @@ Requiere React 19 y Tailwind CSS 4.
 Se instala como dependencia de git, fijada a un tag:
 
 ```json
-"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.2.1"
+"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.2.2"
 ```
 
 `dist/` está commiteado: la instalación no compila nada.

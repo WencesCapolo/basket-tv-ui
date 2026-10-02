@@ -104,24 +104,26 @@ export function Marco({
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(255,255,255,0.88)] backdrop-blur-md">
-          <div className="flex h-[68px] items-center gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
+          <div className="flex h-[68px] items-center gap-2 px-4 sm:h-20 sm:gap-4 sm:px-6 lg:px-8">
             {lanzadorUrl && (
               <a
                 href={lanzadorUrl}
                 aria-label={TEXTO_VOLVER}
                 title={TEXTO_VOLVER}
-                className="inline-flex items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]"
+                className="inline-flex shrink-0 items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]"
               >
                 <Icono nombre="volver" className="size-5" />
               </a>
             )}
-            <div className="flex items-center gap-3 lg:hidden">
+            {/* Below lg the logo is the one item that gives way: it scales down to
+                the room the header's controls leave it, never clipped. */}
+            <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 lg:hidden">
               {secciones.length > 0 && (
                 <MenuMovil marca={marca} secciones={secciones} lanzadorUrl={lanzadorUrl} enlace={enlace} />
               )}
-              <img src={logoEnCabecera} alt="Basket.tv" className="h-7 w-auto" />
+              <img src={logoEnCabecera} alt="Basket.tv" className="h-auto max-h-7 w-auto min-w-0 max-w-full object-contain object-left" />
             </div>
-            <div className="ml-auto flex items-center gap-4 sm:gap-5">{cabecera}</div>
+            <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-5">{cabecera}</div>
           </div>
         </header>
         <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
