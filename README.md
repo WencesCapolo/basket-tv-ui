@@ -2,7 +2,7 @@
 
 Estilos y marco compartidos de las apps de `basket-app.com` (Portal, Facturación, Incidencias, Analytics): que todas se vean como un solo producto.
 
-- `estilos.css`: tokens (escala neutra cálida `--n-*`, rojo `--accent*`, navy `--navy-*`, radio, sombras, fuentes) y los colores de Tailwind que salen de ellos (`bg-n-50`, `text-accent`…). Solo claro.
+- `estilos.css`: tokens (escala neutra cálida `--n-*`, rojo `--accent*`, verde `--ok*`, naranja de advertencia `--warn*`, navy `--navy-*`, radio, sombras, fuentes) y los colores de Tailwind que salen de ellos (`bg-n-50`, `text-accent`, `bg-warn-soft`…). Solo claro.
 - `Marco`: la barra lateral navy con el logo blanco, el nombre de la app, las secciones (compactable, cajón debajo de `lg`) y **Elegir aplicación** al pie; el encabezado con **Volver** al selector de apps y la cabecera de la app.
 - `CampanaDeSolicitudes`: la campana de Solicitudes de acceso y su modal, solo UI.
 - `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir`.

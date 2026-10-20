@@ -32,6 +32,11 @@
   --ok-soft: #eaf6ef;
   --ok-border: #bfe3cf;
 
+  /* Advertencia: lo que anda mal pero no está caído (el Portal ya lo usaba en sus incidencias). */
+  --warn: #c97a13;
+  --warn-soft: #fff7e8;
+  --warn-border: #f3dcb2;
+
   --navy: #07122b;
   --navy-line: #10203f;
   --navy-hover: #132347;
@@ -78,6 +83,14 @@
   --color-accent-strong: var(--accent-strong);
   --color-accent-soft: var(--accent-soft);
   --color-accent-border: var(--accent-border);
+
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-border: var(--ok-border);
+
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-border: var(--warn-border);
 
   --font-sans: var(--font-poppins);
   --font-display: var(--font-oswald);
