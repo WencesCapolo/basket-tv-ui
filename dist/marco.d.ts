@@ -29,7 +29,7 @@ export declare function Marco({ children, nombreDeApp, secciones, lanzadorUrl, c
     secciones?: readonly EnlaceDeNavegacion[];
     /** The Portal's app launcher. Without it there is no Volver nor Elegir aplicación. */
     lanzadorUrl?: string | null;
-    /** The right side of the header: the user chip, a bell, logout. */
+    /** The right side of the header: a bell, `MenuDeUsuario` (or the user chip and logout). */
     cabecera?: ReactNode;
     ancho?: keyof typeof ANCHOS;
     enlace?: ComponenteDeEnlace;

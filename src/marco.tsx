@@ -59,7 +59,7 @@ export function Marco({
   secciones?: readonly EnlaceDeNavegacion[];
   /** The Portal's app launcher. Without it there is no Volver nor Elegir aplicación. */
   lanzadorUrl?: string | null;
-  /** The right side of the header: the user chip, a bell, logout. */
+  /** The right side of the header: a bell, `MenuDeUsuario` (or the user chip and logout). */
   cabecera?: ReactNode;
   ancho?: keyof typeof ANCHOS;
   enlace?: ComponenteDeEnlace;
@@ -105,12 +105,16 @@ export function Marco({
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[rgba(255,255,255,0.88)] backdrop-blur-md">
           <div className="flex h-[68px] items-center gap-2 px-4 sm:h-20 sm:gap-4 sm:px-6 lg:px-8">
+            {/* Below sm the drawer already has "Elegir aplicación": Volver gives its room away. */}
             {lanzadorUrl && (
               <a
                 href={lanzadorUrl}
                 aria-label={TEXTO_VOLVER}
                 title={TEXTO_VOLVER}
-                className="inline-flex shrink-0 items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]"
+                className={unir(
+                  secciones.length > 0 ? 'hidden sm:inline-flex' : 'inline-flex',
+                  'shrink-0 items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]',
+                )}
               >
                 <Icono nombre="volver" className="size-5" />
               </a>
