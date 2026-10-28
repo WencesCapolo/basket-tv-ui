@@ -63,16 +63,22 @@ function leerCompacta() {
 function Marca({ logo, nombreDeApp }) {
     return (_jsxs("div", { className: "flex min-w-0 flex-col gap-2", children: [_jsx("img", { src: logo, alt: "Basket.tv", className: "h-9 w-auto self-start" }), _jsx("p", { className: "text-[11px] font-black uppercase tracking-[0.28em] text-[var(--navy-text)]", children: nombreDeApp })] }));
 }
-/** The Portal's sidebar nav (dashboard-nav): the active section in red, the rest on navy. */
-function NavegacionLateral({ secciones, enlace: Enlace, compacta = false, }) {
-    return (_jsx("nav", { "aria-label": "Secciones", className: "space-y-2", children: secciones.map((item) => (_jsxs(Enlace, { href: item.href, "aria-current": item.activa ? 'page' : undefined, "aria-label": compacta ? item.titulo : undefined, title: compacta ? item.titulo : undefined, onClick: (evento) => {
-                if (!item.onElegir || evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.button !== 0)
-                    return;
-                evento.preventDefault();
-                item.onElegir();
-            }, className: unir('flex items-center gap-3 rounded-[var(--panel-radius)] py-3.5 text-[15px] font-semibold text-white transition [&_svg]:size-5 [&_svg]:shrink-0', compacta ? 'justify-center px-0' : 'px-4', item.activa
-                ? 'bg-[var(--accent)] shadow-[0_14px_32px_rgba(227,27,35,0.24)]'
-                : 'bg-[var(--navy-item)] hover:bg-[var(--navy-hover)]'), children: [item.icono, !compacta && item.titulo] }, item.clave))) }));
+/**
+ * The Portal's sidebar nav (dashboard-nav): the active section in red, the rest on navy.
+ * Without `conGrupos` (the compact bar, the drawer) the group labels are left out.
+ */
+function NavegacionLateral({ secciones, enlace: Enlace, compacta = false, conGrupos = true, }) {
+    return (_jsx("nav", { "aria-label": "Secciones", className: "space-y-2", children: secciones.map((item, indice) => [
+            conGrupos && !compacta && item.grupo && item.grupo !== secciones[indice - 1]?.grupo && (_jsx("p", { className: "px-3 pb-1 pt-3.5 text-[11px] font-semibold tracking-[0.6px] text-[var(--navy-text)]", children: item.grupo }, `grupo-${item.clave}`)),
+            _jsxs(Enlace, { href: item.href, "aria-current": item.activa ? 'page' : undefined, "aria-label": compacta ? item.titulo : undefined, title: compacta ? item.titulo : undefined, onClick: (evento) => {
+                    if (!item.onElegir || evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.button !== 0)
+                        return;
+                    evento.preventDefault();
+                    item.onElegir();
+                }, className: unir('flex items-center gap-3 rounded-[var(--panel-radius)] py-3.5 text-[15px] font-semibold text-white transition [&_svg]:size-5 [&_svg]:shrink-0', compacta ? 'justify-center px-0' : 'px-4', item.activa
+                    ? 'bg-[var(--accent)] shadow-[0_14px_32px_rgba(227,27,35,0.24)]'
+                    : 'bg-[var(--navy-item)] hover:bg-[var(--navy-hover)]'), children: [item.icono, !compacta && item.titulo] }, item.clave),
+        ]) }));
 }
 /** The way out to the Portal's app launcher, at the foot of the sidebar. */
 function EnlaceAlLanzador({ href, compacta = false }) {
@@ -112,5 +118,5 @@ function MenuMovil({ marca, secciones, lanzadorUrl, enlace, }) {
                 createPortal(_jsxs("div", { className: "fixed inset-0 z-[100] lg:hidden", children: [_jsx("div", { "aria-hidden": "true", className: "absolute inset-0 bg-[rgba(7,18,43,0.55)] backdrop-blur-sm", onClick: () => setAbierto(false) }), _jsxs("aside", { ref: cajon, id: idDelCajon, role: "dialog", "aria-modal": "true", "aria-label": "Navegaci\u00F3n", className: "absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-[var(--navy-line)] bg-[var(--navy)]", onClickCapture: (evento) => {
                                 if (evento.target.closest('a'))
                                     setAbierto(false);
-                            }, children: [_jsxs("div", { className: "flex items-start justify-between gap-3 border-b border-[var(--navy-line)] px-6 py-7", children: [marca, _jsx("button", { type: "button", onClick: () => setAbierto(false), "aria-label": "Cerrar navegaci\u00F3n", className: BOTON_SOBRE_NAVY, children: _jsx(Icono, { nombre: "cerrar", className: "size-4" }) })] }), _jsxs("div", { className: "flex flex-1 flex-col justify-between gap-6 px-5 py-6", children: [_jsx(NavegacionLateral, { secciones: secciones, enlace: enlace }), lanzadorUrl && _jsx(EnlaceAlLanzador, { href: lanzadorUrl })] })] })] }), document.body)] }));
+                            }, children: [_jsxs("div", { className: "flex items-start justify-between gap-3 border-b border-[var(--navy-line)] px-6 py-7", children: [marca, _jsx("button", { type: "button", onClick: () => setAbierto(false), "aria-label": "Cerrar navegaci\u00F3n", className: BOTON_SOBRE_NAVY, children: _jsx(Icono, { nombre: "cerrar", className: "size-4" }) })] }), _jsxs("div", { className: "flex flex-1 flex-col justify-between gap-6 px-5 py-6", children: [_jsx(NavegacionLateral, { secciones: secciones, enlace: enlace, conGrupos: false }), lanzadorUrl && _jsx(EnlaceAlLanzador, { href: lanzadorUrl })] })] })] }), document.body)] }));
 }

@@ -8,6 +8,8 @@ export interface EnlaceDeNavegacion {
     readonly activa: boolean;
     /** Navigates without reloading; a ctrl-click still opens a new tab. */
     readonly onElegir?: () => void;
+    /** The sidebar shows it as a small label where it changes: "Caja", "Análisis"… */
+    readonly grupo?: string;
 }
 /** A plain `<a>` by default; a Next app passes `next/link`. */
 export type ComponenteDeEnlace = ComponentType<AnchorHTMLAttributes<HTMLAnchorElement> & {

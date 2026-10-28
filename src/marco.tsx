@@ -24,6 +24,8 @@ export interface EnlaceDeNavegacion {
   readonly activa: boolean;
   /** Navigates without reloading; a ctrl-click still opens a new tab. */
   readonly onElegir?: () => void;
+  /** The sidebar shows it as a small label where it changes: "Caja", "Análisis"… */
+  readonly grupo?: string;
 }
 
 /** A plain `<a>` by default; a Next app passes `next/link`. */
@@ -200,19 +202,32 @@ function Marca({ logo, nombreDeApp }: { logo: string; nombreDeApp: string }) {
   );
 }
 
-/** The Portal's sidebar nav (dashboard-nav): the active section in red, the rest on navy. */
+/**
+ * The Portal's sidebar nav (dashboard-nav): the active section in red, the rest on navy.
+ * Without `conGrupos` (the compact bar, the drawer) the group labels are left out.
+ */
 function NavegacionLateral({
   secciones,
   enlace: Enlace,
   compacta = false,
+  conGrupos = true,
 }: {
   secciones: readonly EnlaceDeNavegacion[];
   enlace: ComponenteDeEnlace;
   compacta?: boolean;
+  conGrupos?: boolean;
 }) {
   return (
     <nav aria-label="Secciones" className="space-y-2">
-      {secciones.map((item) => (
+      {secciones.map((item, indice) => [
+        conGrupos && !compacta && item.grupo && item.grupo !== secciones[indice - 1]?.grupo && (
+          <p
+            key={`grupo-${item.clave}`}
+            className="px-3 pb-1 pt-3.5 text-[11px] font-semibold tracking-[0.6px] text-[var(--navy-text)]"
+          >
+            {item.grupo}
+          </p>
+        ),
         <Enlace
           key={item.clave}
           href={item.href}
@@ -234,8 +249,8 @@ function NavegacionLateral({
         >
           {item.icono}
           {!compacta && item.titulo}
-        </Enlace>
-      ))}
+        </Enlace>,
+      ])}
     </nav>
   );
 }
@@ -335,7 +350,8 @@ function MenuMovil({
                 </button>
               </div>
               <div className="flex flex-1 flex-col justify-between gap-6 px-5 py-6">
-                <NavegacionLateral secciones={secciones} enlace={enlace} />
+                {/* Like the prototype's narrow drawer: no group labels on the phone. */}
+                <NavegacionLateral secciones={secciones} enlace={enlace} conGrupos={false} />
                 {lanzadorUrl && <EnlaceAlLanzador href={lanzadorUrl} />}
               </div>
             </aside>
