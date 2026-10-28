@@ -15,7 +15,7 @@ Requiere React 19 y Tailwind CSS 4.
 Se instala como dependencia de git, fijada a un tag:
 
 ```json
-"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.3.0"
+"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.4.0"
 ```
 
 `dist/` está commiteado: la instalación no compila nada.
@@ -62,6 +62,8 @@ import { Marco, MenuDeUsuario } from 'basket-tv-ui';
   {children}
 </Marco>
 ```
+
+Con `grupo` en las secciones, la barra lateral pinta un rótulo chico cada vez que cambia entre secciones seguidas (`{ …, grupo: 'Caja' }`). No se pinta con la barra compacta ni en el cajón del celular. Sin `grupo`, la barra queda como siempre.
 
 Sin `lanzadorUrl` no se muestran Volver ni Elegir aplicación: pasá `null` a quien tenga menos de dos apps. Con secciones, Volver se esconde debajo de `sm`: el cajón ya tiene Elegir aplicación y en el celular no entra todo en la fila. `enlace` es opcional: por defecto es un `<a>`.
 
