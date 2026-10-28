@@ -63,6 +63,8 @@ import { Marco, MenuDeUsuario } from 'basket-tv-ui';
 </Marco>
 ```
 
+Con `grupo` en las secciones, la barra lateral pinta un rótulo chico cada vez que cambia entre secciones seguidas (`{ …, grupo: 'Caja' }`). No se pinta con la barra compacta ni en el cajón del celular. Sin `grupo`, la barra queda como siempre.
+
 Sin `lanzadorUrl` no se muestran Volver ni Elegir aplicación: pasá `null` a quien tenga menos de dos apps. Con secciones, Volver se esconde debajo de `sm`: el cajón ya tiene Elegir aplicación y en el celular no entra todo en la fila. `enlace` es opcional: por defecto es un `<a>`.
 
 En la `cabecera` del celular entran el menú, el logo y dos botones más: la campana y `MenuDeUsuario`. `ChipDeUsuario` + `BotonDeSalir` siguen andando, pero en el celular ocupan un lugar más.
