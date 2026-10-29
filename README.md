@@ -3,7 +3,7 @@
 Estilos y marco compartidos de las apps de `basket-app.com` (Portal, Facturación, Incidencias, Analytics): que todas se vean como un solo producto.
 
 - `estilos.css`: tokens (escala neutra cálida `--n-*`, rojo `--accent*`, verde `--ok*`, naranja de advertencia `--warn*`, navy `--navy-*`, radio, sombras, fuentes) y los colores de Tailwind que salen de ellos (`bg-n-50`, `text-accent`, `bg-warn-soft`…). Solo claro.
-- `Marco`: la barra lateral navy con el logo blanco, el nombre de la app, las secciones (compactable, cajón debajo de `lg`) y **Elegir aplicación** al pie; el encabezado con **Volver** al selector de apps y la cabecera de la app.
+- `Marco`: la barra lateral navy con el logo blanco, el nombre de la app, las secciones (compactable, cajón debajo de `lg`) y **Elegir aplicación** al pie; el encabezado con **Volver** (atrás dentro de la app, el selector de apps desde la raíz) y la cabecera de la app.
 - `CampanaDeSolicitudes`: la campana de Solicitudes de acceso y su modal, solo UI.
 - `MenuDeUsuario`: el usuario en el encabezado. Desde `sm`, el chip y el botón de salir; en el celular, las iniciales abren un menú con el nombre, el rol, **Elegir aplicación** y **Cerrar sesión**.
 - `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir`.
@@ -66,6 +66,8 @@ import { Marco, MenuDeUsuario } from 'basket-tv-ui';
 Con `grupo` en las secciones, la barra lateral pinta un rótulo chico cada vez que cambia entre secciones seguidas (`{ …, grupo: 'Caja' }`). No se pinta con la barra compacta ni en el cajón del celular. Sin `grupo`, la barra queda como siempre.
 
 Sin `lanzadorUrl` no se muestran Volver ni Elegir aplicación: pasá `null` a quien tenga menos de dos apps. Con secciones, Volver se esconde debajo de `sm`: el cajón ya tiene Elegir aplicación y en el celular no entra todo en la fila. `enlace` es opcional: por defecto es un `<a>`.
+
+Volver es el atrás del navegador dentro de la app: de `/int/123` vuelve a `/int?dia=…` con sus filtros. En la raíz (`/` o la página de una sección, con o sin query) lleva al selector de apps. Si al detalle se entró directo (sin página propia atrás), lleva a la sección activa; sin sección activa, al selector. `BotonDeVolver` se exporta para shells que no usan `Marco`.
 
 En la `cabecera` del celular entran el menú, el logo y dos botones más: la campana y `MenuDeUsuario`. `ChipDeUsuario` + `BotonDeSalir` siguen andando, pero en el celular ocupan un lugar más.
 
