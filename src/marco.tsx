@@ -14,6 +14,7 @@ import { createPortal } from 'react-dom';
 import { retenerFoco } from './foco.js';
 import { Icono } from './iconos.js';
 import { unir } from './unir.js';
+import { BotonDeVolver } from './volver.js';
 
 export interface EnlaceDeNavegacion {
   readonly clave: string;
@@ -31,7 +32,6 @@ export interface EnlaceDeNavegacion {
 /** A plain `<a>` by default; a Next app passes `next/link`. */
 export type ComponenteDeEnlace = ComponentType<AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }>;
 
-const TEXTO_VOLVER = 'Volver';
 const TEXTO_DEL_LANZADOR = 'Elegir aplicación';
 const CLAVE_DE_COMPACTA = 'basket-tv-ui.barra-lateral.compacta';
 const ANCHOS = { normal: 'max-w-6xl', amplio: 'max-w-none' } as const;
@@ -42,7 +42,8 @@ const BOTON_SOBRE_NAVY =
 /**
  * The shell every basket-app.com app shares: the navy sidebar with the brand,
  * the sections and "Elegir aplicación" (collapsible, a drawer below lg); the
- * sticky header with "Volver" to the launcher and the user; and the page.
+ * sticky header with "Volver" (back inside the app, the launcher at its top)
+ * and the user; and the page.
  */
 export function Marco({
   children,
@@ -109,17 +110,12 @@ export function Marco({
           <div className="flex h-[68px] items-center gap-2 px-4 sm:h-20 sm:gap-4 sm:px-6 lg:px-8">
             {/* Below sm the drawer already has "Elegir aplicación": Volver gives its room away. */}
             {lanzadorUrl && (
-              <a
-                href={lanzadorUrl}
-                aria-label={TEXTO_VOLVER}
-                title={TEXTO_VOLVER}
-                className={unir(
-                  secciones.length > 0 ? 'hidden sm:inline-flex' : 'inline-flex',
-                  'shrink-0 items-center justify-center rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)] transition hover:bg-[var(--background-soft)]',
-                )}
-              >
-                <Icono nombre="volver" className="size-5" />
-              </a>
+              <BotonDeVolver
+                lanzadorUrl={lanzadorUrl}
+                secciones={secciones}
+                enlace={enlace}
+                className={secciones.length > 0 ? 'hidden sm:inline-flex' : 'inline-flex'}
+              />
             )}
             {/* Below lg the logo is the one item that gives way: it scales down to
                 the room the header's controls leave it, never clipped. */}

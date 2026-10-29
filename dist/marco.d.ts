@@ -22,7 +22,8 @@ declare const ANCHOS: {
 /**
  * The shell every basket-app.com app shares: the navy sidebar with the brand,
  * the sections and "Elegir aplicación" (collapsible, a drawer below lg); the
- * sticky header with "Volver" to the launcher and the user; and the page.
+ * sticky header with "Volver" (back inside the app, the launcher at its top)
+ * and the user; and the page.
  */
 export declare function Marco({ children, nombreDeApp, secciones, lanzadorUrl, cabecera, ancho, enlace, logo, logoEnCabecera, }: {
     children: ReactNode;
