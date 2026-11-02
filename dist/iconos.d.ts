@@ -6,6 +6,8 @@ declare const TRAZOS: {
     readonly compactar: import("react").JSX.Element;
     readonly expandir: import("react").JSX.Element;
     readonly solicitudes: import("react").JSX.Element;
+    readonly abajo: import("react").JSX.Element;
+    readonly elegida: import("react").JSX.Element;
     readonly salir: import("react").JSX.Element;
 };
 export type NombreDeIcono = keyof typeof TRAZOS;

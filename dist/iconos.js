@@ -10,6 +10,8 @@ const TRAZOS = {
     compactar: (_jsxs(_Fragment, { children: [_jsx("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }), _jsx("path", { d: "M9 3v18" }), _jsx("path", { d: "m16 15-3-3 3-3" })] })),
     expandir: (_jsxs(_Fragment, { children: [_jsx("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }), _jsx("path", { d: "M9 3v18" }), _jsx("path", { d: "m14 9 3 3-3 3" })] })),
     solicitudes: (_jsxs(_Fragment, { children: [_jsx("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }), _jsx("circle", { cx: "9", cy: "7", r: "4" }), _jsx("path", { d: "M19 8v6" }), _jsx("path", { d: "M22 11h-6" })] })),
+    abajo: _jsx("path", { d: "m6 9 6 6 6-6" }),
+    elegida: _jsx("path", { d: "M20 6 9 17l-5-5" }),
     salir: (_jsxs(_Fragment, { children: [_jsx("path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" }), _jsx("path", { d: "m16 17 5-5-5-5" }), _jsx("path", { d: "M21 12H9" })] })),
 };
 export function Icono({ nombre, className }) {
