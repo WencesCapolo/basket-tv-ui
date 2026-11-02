@@ -14,6 +14,6 @@ const TRAZOS = {
     elegida: _jsx("path", { d: "M20 6 9 17l-5-5" }),
     salir: (_jsxs(_Fragment, { children: [_jsx("path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" }), _jsx("path", { d: "m16 17 5-5-5-5" }), _jsx("path", { d: "M21 12H9" })] })),
 };
-export function Icono({ nombre, className }) {
-    return (_jsx("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round", className: unir('size-[18px] shrink-0', className), children: TRAZOS[nombre] }));
+export function Icono({ nombre, className, grosor = 2.2, }) {
+    return (_jsx("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", fill: "none", stroke: "currentColor", strokeWidth: grosor, strokeLinecap: "round", strokeLinejoin: "round", className: unir('size-[18px] shrink-0', className), children: TRAZOS[nombre] }));
 }

@@ -66,14 +66,23 @@ const TRAZOS = {
 
 export type NombreDeIcono = keyof typeof TRAZOS;
 
-export function Icono({ nombre, className }: { nombre: NombreDeIcono; className?: string }) {
+export function Icono({
+  nombre,
+  className,
+  grosor = 2.2,
+}: {
+  nombre: NombreDeIcono;
+  className?: string;
+  /** Stroke width; lucide's default is 2. */
+  grosor?: number;
+}) {
   return (
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2.2}
+      strokeWidth={grosor}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={unir('size-[18px] shrink-0', className)}

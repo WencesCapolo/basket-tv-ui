@@ -6,8 +6,8 @@ Estilos y marco compartidos de las apps de `basket-app.com` (Portal, Facturació
 - `Marco`: la barra lateral navy con el logo blanco, el nombre de la app, las secciones (compactable, cajón debajo de `lg`) y **Elegir aplicación** al pie; el encabezado con **Volver** (atrás dentro de la app, el selector de apps desde la raíz) y la cabecera de la app.
 - `CampanaDeSolicitudes`: la campana de Solicitudes de acceso y su modal, solo UI.
 - `MenuDeUsuario`: el usuario en el encabezado. Desde `sm`, el chip y el botón de salir; en el celular, las iniciales abren un menú con el nombre, el rol, **Elegir aplicación** y **Cerrar sesión**.
-- `Selector`: un select controlado con lista de opciones propia (con mouse) y el `<select>` del sistema en el celular.
-- `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir`.
+- `Select`: el select del Portal: se usa como un `<select>` nativo, pero la lista abierta es propia, en la compu y en el celular.
+- `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir` (une clases y resuelve choques de Tailwind como el `cn` del Portal, con `tailwind-merge`).
 
 Requiere React 19 y Tailwind CSS 4.
 
@@ -16,7 +16,7 @@ Requiere React 19 y Tailwind CSS 4.
 Se instala como dependencia de git, fijada a un tag:
 
 ```json
-"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.6.0"
+"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.7.0"
 ```
 
 `dist/` está commiteado: la instalación no compila nada.
@@ -110,30 +110,43 @@ Los admins de la app deciden desde `CampanaDeSolicitudes`, en la `cabecera` del 
 - `decision` reemplaza el selector de rol en un ítem: el apex lo usa para el formulario propio del Portal.
 - Se abre sola una vez por conjunto de pendientes y por pestaña (`sessionStorage`). El modal va a `<body>`, así el `backdrop-blur` del encabezado no lo recorta.
 
-### Selector
+### Select
 
-Reemplaza al `<select>` estilizado: cerrado se ve igual, pero la lista abierta es nuestra (la del navegador no se puede estilizar).
+Es el `Select` del Portal (`src/components/ui/select.tsx`), movido acá. Se usa igual que un `<select>`: los mismos hijos y props, solo cambia el import.
 
 ```tsx
+import { Select } from 'basket-tv-ui';
+
 <label htmlFor="periodo">Período</label>
-<Selector
-  id="periodo"
-  name="periodo" // va en el FormData
-  valor={periodo}
-  onCambiar={setPeriodo}
-  placeholder="Todos los períodos" // opción de valor ''
-  opciones={periodos.map((p) => ({ valor: p.id, etiqueta: p.nombre }))}
-  className="w-full sm:w-64"
-/>
+<Select id="periodo" name="periodo" value={periodo} onChange={(e) => setPeriodo(e.target.value)} required>
+  <option value="">Todos los períodos</option>
+  <optgroup label="2026">
+    <option value="2026-10">Octubre 2026</option>
+    <option value="2026-11" disabled>Noviembre 2026</option>
+  </optgroup>
+</Select>
 ```
 
-- Con mouse (`pointer: fine`) es un botón con una lista propia: el patrón _select-only combobox_ del WAI-ARIA APG (flechas, Home/End, Enter/Space, Escape, Tab, búsqueda por las primeras letras). La lista va a `<body>`, así no la recorta un `overflow` ni un modal, y se abre para arriba si abajo no entra.
-- Con el dedo (`pointer: coarse`) es un `<select>` nativo con el mismo aspecto: el selector del sistema es mejor en el celular. En el servidor y al hidratar sale el nativo; con mouse se cambia enseguida.
-- `className` va a la caja de afuera: el ancho y la ubicación. Sin ancho, mide lo que la opción elegida.
-- `variante="pastilla"`: la pastilla chica en mayúsculas para una celda. No trae colores: van en `className` (`bg-ok-soft text-ok border border-ok-border`).
-- `invalido`, `deshabilitado`, `aria-label` / `aria-labelledby`; `deshabilitada` en una opción.
+- Hijos: `<option>` y `<optgroup>` directos (o dentro de un Fragment o un array). Un componente propio que devuelve `<option>` no se lee: mapeá las opciones ahí mismo.
+- `value` + `onChange` (controlado) o `defaultValue` (no controlado; vuelve al inicial con el `reset` del formulario). `onChange` recibe el evento `change` real del `<select>` oculto: `e.target.value`, `e.target.name`.
+- `name`, `form`, `required`, `autoComplete` van al `<select>` oculto: entra en el `FormData` y valida. Si `required` queda vacío al enviar, el botón se pinta con `--accent` / `--accent-soft` hasta que se elige algo.
+- `disabled`, `autoFocus`, `defaultOpen` y cualquier prop de `<button>` (`id`, `aria-*`, `title`, `onBlur`, `onKeyDown`…) van al botón. `className` también, y gana sobre las clases propias (`rounded-xl`, `h-11`, `px-3`…).
+- La lista va a `<body>` con `position: fixed` y `z-[400]` (arriba del cajón del `Marco`, `z-[100]`, y de los modales, `z-[90]`); se abre para arriba si abajo no entra y se reubica al hacer scroll o cambiar el tamaño. Un clic adentro no llega a los `mousedown` de afuera, así un modal no se cierra.
+- Teclado: el _select-only combobox_ del WAI-ARIA APG. Flechas, Home y End (saltean las deshabilitadas), Enter o Espacio eligen, Escape cierra sin cerrar el modal y Tab sale. Escribir salta a la primera opción que empieza así, sin importar tildes ni mayúsculas.
+- En el celular también se usa la lista propia: no hay `<select>` del sistema.
 
-De `<select value onChange>`: las `<option>` pasan a `opciones`, la opción vacía a `placeholder` y `onChange={(e) => set(e.target.value)}` a `onCambiar={set}`.
+`variante="pastilla"`: la pastilla chica en mayúsculas para una celda de una grilla (el estado en facturacion-bp). Trae colores neutros; los suyos van en `className`:
+
+```tsx
+<Select variante="pastilla" aria-label="Estado" value={estado} onChange={(e) => cambiar(e.target.value)} className="border-ok-border bg-ok-soft text-ok">
+  <option value="pendiente">Pendiente</option>
+  <option value="pagada">Pagada</option>
+</Select>
+```
+
+Sin `variante` es el campo del Portal, igual que siempre.
+
+`Selector` queda como alias de `Select`. La API de la v0.6.0 (`valor`, `onCambiar`, `opciones`, `placeholder`) ya no existe.
 
 ## Desarrollo
 

@@ -11,8 +11,10 @@ declare const TRAZOS: {
     readonly salir: import("react").JSX.Element;
 };
 export type NombreDeIcono = keyof typeof TRAZOS;
-export declare function Icono({ nombre, className }: {
+export declare function Icono({ nombre, className, grosor, }: {
     nombre: NombreDeIcono;
     className?: string;
+    /** Stroke width; lucide's default is 2. */
+    grosor?: number;
 }): import("react").JSX.Element;
 export {};
