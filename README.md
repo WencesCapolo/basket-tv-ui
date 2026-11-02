@@ -6,6 +6,7 @@ Estilos y marco compartidos de las apps de `basket-app.com` (Portal, Facturació
 - `Marco`: la barra lateral navy con el logo blanco, el nombre de la app, las secciones (compactable, cajón debajo de `lg`) y **Elegir aplicación** al pie; el encabezado con **Volver** (atrás dentro de la app, el selector de apps desde la raíz) y la cabecera de la app.
 - `CampanaDeSolicitudes`: la campana de Solicitudes de acceso y su modal, solo UI.
 - `MenuDeUsuario`: el usuario en el encabezado. Desde `sm`, el chip y el botón de salir; en el celular, las iniciales abren un menú con el nombre, el rol, **Elegir aplicación** y **Cerrar sesión**.
+- `Selector`: un select controlado con lista de opciones propia (con mouse) y el `<select>` del sistema en el celular.
 - `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir`.
 
 Requiere React 19 y Tailwind CSS 4.
@@ -15,7 +16,7 @@ Requiere React 19 y Tailwind CSS 4.
 Se instala como dependencia de git, fijada a un tag:
 
 ```json
-"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.4.0"
+"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.6.0"
 ```
 
 `dist/` está commiteado: la instalación no compila nada.
@@ -108,6 +109,31 @@ Los admins de la app deciden desde `CampanaDeSolicitudes`, en la `cabecera` del 
 - Con varios roles hay que elegir uno; con uno solo viene elegido; sin roles solo se puede rechazar.
 - `decision` reemplaza el selector de rol en un ítem: el apex lo usa para el formulario propio del Portal.
 - Se abre sola una vez por conjunto de pendientes y por pestaña (`sessionStorage`). El modal va a `<body>`, así el `backdrop-blur` del encabezado no lo recorta.
+
+### Selector
+
+Reemplaza al `<select>` estilizado: cerrado se ve igual, pero la lista abierta es nuestra (la del navegador no se puede estilizar).
+
+```tsx
+<label htmlFor="periodo">Período</label>
+<Selector
+  id="periodo"
+  name="periodo" // va en el FormData
+  valor={periodo}
+  onCambiar={setPeriodo}
+  placeholder="Todos los períodos" // opción de valor ''
+  opciones={periodos.map((p) => ({ valor: p.id, etiqueta: p.nombre }))}
+  className="w-full sm:w-64"
+/>
+```
+
+- Con mouse (`pointer: fine`) es un botón con una lista propia: el patrón _select-only combobox_ del WAI-ARIA APG (flechas, Home/End, Enter/Space, Escape, Tab, búsqueda por las primeras letras). La lista va a `<body>`, así no la recorta un `overflow` ni un modal, y se abre para arriba si abajo no entra.
+- Con el dedo (`pointer: coarse`) es un `<select>` nativo con el mismo aspecto: el selector del sistema es mejor en el celular. En el servidor y al hidratar sale el nativo; con mouse se cambia enseguida.
+- `className` va a la caja de afuera: el ancho y la ubicación. Sin ancho, mide lo que la opción elegida.
+- `variante="pastilla"`: la pastilla chica en mayúsculas para una celda. No trae colores: van en `className` (`bg-ok-soft text-ok border border-ok-border`).
+- `invalido`, `deshabilitado`, `aria-label` / `aria-labelledby`; `deshabilitada` en una opción.
+
+De `<select value onChange>`: las `<option>` pasan a `opciones`, la opción vacía a `placeholder` y `onChange={(e) => set(e.target.value)}` a `onCambiar={set}`.
 
 ## Desarrollo
 

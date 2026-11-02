@@ -53,6 +53,8 @@ const TRAZOS = {
       <path d="M22 11h-6" />
     </>
   ),
+  abajo: <path d="m6 9 6 6 6-6" />,
+  elegida: <path d="M20 6 9 17l-5-5" />,
   salir: (
     <>
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

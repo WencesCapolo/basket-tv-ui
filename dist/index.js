@@ -3,5 +3,6 @@ export { ChipDeUsuario } from './chip-de-usuario.js';
 export { MenuDeUsuario } from './menu-de-usuario.js';
 export { urlDeSolicitud, urlDelLanzador } from './lanzador.js';
 export { BotonDeSalir, Marco } from './marco.js';
+export { Selector } from './selector.js';
 export { unir } from './unir.js';
 export { BotonDeVolver, destinoDeVolver } from './volver.js';
