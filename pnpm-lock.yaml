@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       tailwind-merge:
-        specifier: ^3.7.0
+        specifier: ^3.5.0
         version: 3.7.0
     devDependencies:
       '@testing-library/react':
