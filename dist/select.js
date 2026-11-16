@@ -282,7 +282,9 @@ export function Select({ className, children, value, defaultValue, onChange, nam
                                             setActiveIndex(index);
                                         }
                                     }, onClick: () => pick(option), className: unir("flex cursor-pointer items-center gap-2 rounded-[7px] px-2.5 py-2", index === activeIndex && "bg-[var(--n-100)]", isSelected && "font-semibold text-[var(--accent-strong)]", option.value === "" && !isSelected && "text-[var(--n-500)]", option.disabled && "cursor-not-allowed opacity-50"), children: [_jsx("span", { className: "min-w-0 flex-1", children: option.label }), isSelected ? (_jsx(Icono, { nombre: "elegida", grosor: 2, className: "size-4 shrink-0 text-[var(--accent)]" })) : null] })] }, `${option.group ?? ""}-${option.value}-${index}`));
-                    }) }), document.body)
+                    }) }), 
+                // Inside a modal <dialog> the rest of the page is inert and under the top layer.
+                triggerRef.current?.closest("dialog[open]") ?? document.body)
                 : null] }));
 }
 /** Alias of `Select`. v0.6.0's `Selector` props (`valor`, `onCambiar`, `opciones`) are gone. */

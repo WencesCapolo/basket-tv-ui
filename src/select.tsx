@@ -473,7 +473,8 @@ export function Select({
                 );
               })}
             </div>,
-            document.body,
+            // Inside a modal <dialog> the rest of the page is inert and under the top layer.
+            triggerRef.current?.closest("dialog[open]") ?? document.body,
           )
         : null}
     </>
