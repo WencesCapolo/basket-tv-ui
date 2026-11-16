@@ -131,7 +131,7 @@ import { Select } from 'basket-tv-ui';
 - `value` + `onChange` (controlado) o `defaultValue` (no controlado; vuelve al inicial con el `reset` del formulario). `onChange` recibe el evento `change` real del `<select>` oculto: `e.target.value`, `e.target.name`.
 - `name`, `form`, `required`, `autoComplete` van al `<select>` oculto: entra en el `FormData` y valida. Si `required` queda vacío al enviar, el botón se pinta con `--accent` / `--accent-soft` hasta que se elige algo.
 - `disabled`, `autoFocus`, `defaultOpen` y cualquier prop de `<button>` (`id`, `aria-*`, `title`, `onBlur`, `onKeyDown`…) van al botón. `className` también, y gana sobre las clases propias (`rounded-xl`, `h-11`, `px-3`…).
-- La lista va a `<body>` con `position: fixed` y `z-[400]` (arriba del cajón del `Marco`, `z-[100]`, y de los modales, `z-[90]`); se abre para arriba si abajo no entra y se reubica al hacer scroll o cambiar el tamaño. Un clic adentro no llega a los `mousedown` de afuera, así un modal no se cierra.
+- La lista va a `<body>` (o al `<dialog>` abierto que la contiene: con `showModal()` lo demás queda inerte y debajo) con `position: fixed` y `z-[400]` (arriba del cajón del `Marco`, `z-[100]`, y de los modales, `z-[90]`); se abre para arriba si abajo no entra y se reubica al hacer scroll o cambiar el tamaño. Un clic adentro no llega a los `mousedown` de afuera, así un modal no se cierra.
 - Teclado: el _select-only combobox_ del WAI-ARIA APG. Flechas, Home y End (saltean las deshabilitadas), Enter o Espacio eligen, Escape cierra sin cerrar el modal y Tab sale. Escribir salta a la primera opción que empieza así, sin importar tildes ni mayúsculas.
 - En el celular también se usa la lista propia: no hay `<select>` del sistema.
 

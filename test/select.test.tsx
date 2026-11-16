@@ -417,6 +417,22 @@ describe('Select', () => {
     expect(boton().textContent).toBe('Agosto 2026');
   });
 
+  it('inside an open dialog the list renders in the dialog, so a modal does not make it inert', async () => {
+    const usuario = userEvent.setup();
+    const alCambiar = vi.fn();
+    render(
+      <dialog open>
+        <Controlado alCambiar={alCambiar} />
+      </dialog>,
+    );
+
+    await usuario.click(boton());
+    expect(screen.getByRole('listbox').parentElement?.tagName).toBe('DIALOG');
+
+    await usuario.click(screen.getByRole('option', { name: 'Agosto 2026' }));
+    expect(alCambiar).toHaveBeenCalledWith('2026-08');
+  });
+
   it('a click outside closes it without choosing', async () => {
     const usuario = userEvent.setup();
     const alCambiar = vi.fn();
