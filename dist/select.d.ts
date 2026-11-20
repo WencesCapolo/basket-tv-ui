@@ -1,10 +1,10 @@
 import * as React from "react";
 /**
- * `campo`: the Portal's form field. `pastilla`: a compact uppercase pill for a
- * data-grid cell; it brings neutral colours, the app passes its own in
- * `className` (`bg-ok-soft text-ok border-ok-border`).
+ * `campo`: the Portal's form field. `compacto`: a field in a data-grid cell.
+ * `pastilla`: a compact uppercase pill for a data-grid cell; it brings neutral
+ * colours, the app passes its own in `className` (`bg-ok-soft text-ok border-ok-border`).
  */
-export type VarianteDeSelect = "campo" | "pastilla";
+export type VarianteDeSelect = "campo" | "compacto" | "pastilla";
 export type SelectProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value" | "defaultValue" | "onChange" | "type" | "name" | "form"> & Pick<React.SelectHTMLAttributes<HTMLSelectElement>, "value" | "defaultValue" | "onChange" | "name" | "form" | "required" | "autoComplete"> & {
     defaultOpen?: boolean;
     variante?: VarianteDeSelect;

@@ -483,7 +483,9 @@ describe('Select', () => {
     );
 
     expect(boton().dataset.variante).toBe('campo');
-    expect(boton().className).toContain('rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--background-soft)] px-4 py-3');
+    expect(boton().className.split(' ')).toEqual(
+      expect.arrayContaining(['rounded-[var(--panel-radius)]', 'border', 'border-[var(--border)]', 'bg-[var(--background-soft)]', 'px-4', 'py-3']),
+    );
   });
 
   it('Selector is the same component', () => {

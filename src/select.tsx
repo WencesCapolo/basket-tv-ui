@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { createPortal } from "react-dom";
+import { CLASES_DE_CAMPO } from "./campo.js";
+import { escribirValor, Flotante, plegar, useFlotante } from "./flotante.js";
 import { Icono } from "./iconos.js";
 import { unir } from "./unir.js";
 
@@ -13,11 +14,11 @@ type SelectOption = {
 };
 
 /**
- * `campo`: the Portal's form field. `pastilla`: a compact uppercase pill for a
- * data-grid cell; it brings neutral colours, the app passes its own in
- * `className` (`bg-ok-soft text-ok border-ok-border`).
+ * `campo`: the Portal's form field. `compacto`: a field in a data-grid cell.
+ * `pastilla`: a compact uppercase pill for a data-grid cell; it brings neutral
+ * colours, the app passes its own in `className` (`bg-ok-soft text-ok border-ok-border`).
  */
-export type VarianteDeSelect = "campo" | "pastilla";
+export type VarianteDeSelect = "campo" | "compacto" | "pastilla";
 
 export type SelectProps = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -32,23 +33,11 @@ export type SelectProps = Omit<
   };
 
 const ESTILOS_DEL_BOTON: Record<VarianteDeSelect, string> = {
-  campo:
-    "flex w-full cursor-pointer items-center gap-2 rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--background-soft)] px-4 py-3 text-left text-sm text-[var(--foreground)] outline-none transition hover:border-[var(--n-300)] focus:border-[var(--accent)] focus:bg-[var(--surface)] focus:ring-4 focus:ring-[rgba(230,18,56,0.08)] disabled:cursor-not-allowed disabled:opacity-55 disabled:hover:border-[var(--border)]",
+  campo: unir(CLASES_DE_CAMPO.campo, "flex cursor-pointer items-center gap-2 text-left"),
+  compacto: unir(CLASES_DE_CAMPO.compacto, "flex cursor-pointer items-center gap-1 text-left"),
   pastilla:
     "inline-flex h-7 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-[var(--n-100)] px-3 text-left text-[11px] font-black uppercase tracking-[0.12em] text-[var(--n-700)] outline-none transition focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] disabled:cursor-not-allowed disabled:opacity-55",
 };
-
-type PopoverPosition = {
-  left: number;
-  width: number;
-  maxHeight: number;
-  top?: number;
-  bottom?: number;
-};
-
-const POPOVER_GAP = 6;
-const POPOVER_MAX_HEIGHT = 288;
-const TYPEAHEAD_RESET_MS = 700;
 
 function textOf(node: React.ReactNode): string {
   if (node == null || typeof node === "boolean") return "";
@@ -98,33 +87,7 @@ function collectOptions(
   return options;
 }
 
-function normalizeKey(value: string) {
-  return value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-}
-
-function computePosition(trigger: HTMLElement): PopoverPosition {
-  const rect = trigger.getBoundingClientRect();
-  const spaceBelow = window.innerHeight - rect.bottom - POPOVER_GAP * 2;
-  const spaceAbove = rect.top - POPOVER_GAP * 2;
-  const width = Math.max(rect.width, 180);
-  const left = Math.max(8, Math.min(rect.left, window.innerWidth - width - 8));
-
-  if (spaceBelow < 200 && spaceAbove > spaceBelow) {
-    return {
-      left,
-      width,
-      bottom: window.innerHeight - rect.top + POPOVER_GAP,
-      maxHeight: Math.min(POPOVER_MAX_HEIGHT, spaceAbove),
-    };
-  }
-
-  return {
-    left,
-    width,
-    top: rect.bottom + POPOVER_GAP,
-    maxHeight: Math.min(POPOVER_MAX_HEIGHT, spaceBelow),
-  };
-}
+const TYPEAHEAD_RESET_MS = 700;
 
 /**
  * The Portal's select: a drop-in `<select>` (same `<option>`/`<optgroup>`
@@ -162,13 +125,12 @@ export function Select({
     options.find((option) => option.value === currentValue) ??
     options.find((option) => !option.disabled);
 
-  const [open, setOpen] = React.useState(false);
   const [invalid, setInvalid] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(-1);
-  const [position, setPosition] = React.useState<PopoverPosition | null>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const selectRef = React.useRef<HTMLSelectElement>(null);
-  const listRef = React.useRef<HTMLDivElement>(null);
+  const flotante = useFlotante(triggerRef);
+  const { abierto: open, abrir, cerrar } = flotante;
   const typeaheadRef = React.useRef({ query: "", timeout: 0 });
   const listboxId = React.useId();
 
@@ -179,31 +141,25 @@ export function Select({
         (option) => option.value === selectedOption?.value,
       );
       setActiveIndex(index ?? Math.max(0, selectedIndex));
-      setPosition(computePosition(triggerRef.current));
-      setOpen(true);
+      abrir();
     },
-    [options, selectedOption],
+    [options, selectedOption, abrir],
   );
 
-  const closeList = React.useCallback((refocus = true) => {
-    setOpen(false);
-    if (refocus) triggerRef.current?.focus();
-  }, []);
+  const closeList = React.useCallback(
+    (refocus = true) => {
+      cerrar();
+      if (refocus) triggerRef.current?.focus();
+    },
+    [cerrar],
+  );
 
   function pick(option: SelectOption) {
     if (option.disabled) return;
     closeList();
 
     const select = selectRef.current;
-    if (!select || select.value === option.value) return;
-
-    const setNativeValue = Object.getOwnPropertyDescriptor(
-      HTMLSelectElement.prototype,
-      "value",
-    )?.set;
-    setNativeValue?.call(select, option.value);
-    select.dispatchEvent(new Event("input", { bubbles: true }));
-    select.dispatchEvent(new Event("change", { bubbles: true }));
+    if (select && select.value !== option.value) escribirValor(select, option.value);
   }
 
   function moveActive(from: number, step: 1 | -1) {
@@ -220,13 +176,13 @@ export function Select({
   function findByTypeahead(key: string) {
     const typeahead = typeaheadRef.current;
     window.clearTimeout(typeahead.timeout);
-    typeahead.query += normalizeKey(key);
+    typeahead.query += plegar(key);
     typeahead.timeout = window.setTimeout(() => {
       typeahead.query = "";
     }, TYPEAHEAD_RESET_MS);
     return options.findIndex(
       (option) =>
-        !option.disabled && normalizeKey(option.label).startsWith(typeahead.query),
+        !option.disabled && plegar(option.label).startsWith(typeahead.query),
     );
   }
 
@@ -313,33 +269,10 @@ export function Select({
 
   React.useEffect(() => {
     if (!open) return;
-
-    function handlePointerDown(event: MouseEvent) {
-      if (triggerRef.current?.contains(event.target as Node)) return;
-      closeList(false);
-    }
-
-    function handleViewportChange(event: Event) {
-      if (listRef.current?.contains(event.target as Node)) return;
-      if (triggerRef.current) setPosition(computePosition(triggerRef.current));
-    }
-
-    document.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("scroll", handleViewportChange, true);
-    window.addEventListener("resize", handleViewportChange);
-    return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("scroll", handleViewportChange, true);
-      window.removeEventListener("resize", handleViewportChange);
-    };
-  }, [open, closeList]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    listRef.current
+    flotante.panel.current
       ?.querySelector(`[data-index="${activeIndex}"]`)
       ?.scrollIntoView({ block: "nearest" });
-  }, [open, activeIndex]);
+  }, [open, activeIndex, flotante.panel]);
 
   const isPlaceholder = !selectedOption || selectedOption.value === "";
   const groupHeaders = options.map((option, index) =>
@@ -376,7 +309,7 @@ export function Select({
         <span
           className={unir(
             "min-w-0 flex-1 truncate",
-            isPlaceholder && variante === "campo" && "text-[var(--n-500)]",
+            isPlaceholder && variante !== "pastilla" && "text-[var(--n-500)]",
           )}
         >
           {selectedOption?.label ?? ""}
@@ -387,6 +320,7 @@ export function Select({
           className={unir(
             "size-4 shrink-0 text-[var(--n-500)] transition-transform",
             variante === "pastilla" && "size-3.5 text-current",
+            variante === "compacto" && "size-3.5",
             open && "rotate-180",
           )}
         />
@@ -412,71 +346,47 @@ export function Select({
       >
         {children}
       </select>
-      {open && position
-        ? createPortal(
-            <div
-              ref={listRef}
-              id={listboxId}
-              role="listbox"
-              // Keeps focus on the trigger and hides the click from the outside-click
-              // handlers of the popovers and modals this select lives in.
-              onMouseDown={(event) => {
-                event.preventDefault();
-                event.nativeEvent.stopImmediatePropagation();
-              }}
-              style={{
-                left: position.left,
-                width: position.width,
-                top: position.top,
-                bottom: position.bottom,
-                maxHeight: position.maxHeight,
-              }}
-              className="fixed z-[400] overflow-y-auto overscroll-contain rounded-[var(--panel-radius)] border border-[var(--border)] bg-[var(--surface)] p-1.5 text-sm text-[var(--foreground)] shadow-[var(--shadow-lift)]"
-            >
-              {options.map((option, index) => {
-                const groupHeader = groupHeaders[index];
-                const isSelected = option.value === selectedOption?.value;
+      <Flotante ancla={triggerRef} flotante={flotante} id={listboxId} role="listbox">
+        {options.map((option, index) => {
+          const groupHeader = groupHeaders[index];
+          const isSelected = option.value === selectedOption?.value;
 
-                return (
-                  <React.Fragment key={`${option.group ?? ""}-${option.value}-${index}`}>
-                    {groupHeader ? (
-                      <div className="px-2.5 pb-1 pt-2.5 text-[10.5px] font-semibold uppercase tracking-[0.07em] text-[var(--n-400)]">
-                        {groupHeader}
-                      </div>
-                    ) : null}
-                    <div
-                      id={`${listboxId}-${index}`}
-                      data-index={index}
-                      role="option"
-                      aria-selected={isSelected}
-                      aria-disabled={option.disabled || undefined}
-                      onMouseMove={() => {
-                        if (!option.disabled && activeIndex !== index) {
-                          setActiveIndex(index);
-                        }
-                      }}
-                      onClick={() => pick(option)}
-                      className={unir(
-                        "flex cursor-pointer items-center gap-2 rounded-[7px] px-2.5 py-2",
-                        index === activeIndex && "bg-[var(--n-100)]",
-                        isSelected && "font-semibold text-[var(--accent-strong)]",
-                        option.value === "" && !isSelected && "text-[var(--n-500)]",
-                        option.disabled && "cursor-not-allowed opacity-50",
-                      )}
-                    >
-                      <span className="min-w-0 flex-1">{option.label}</span>
-                      {isSelected ? (
-                        <Icono nombre="elegida" grosor={2} className="size-4 shrink-0 text-[var(--accent)]" />
-                      ) : null}
-                    </div>
-                  </React.Fragment>
-                );
-              })}
-            </div>,
-            // Inside a modal <dialog> the rest of the page is inert and under the top layer.
-            triggerRef.current?.closest("dialog[open]") ?? document.body,
-          )
-        : null}
+          return (
+            <React.Fragment key={`${option.group ?? ""}-${option.value}-${index}`}>
+              {groupHeader ? (
+                <div className="px-2.5 pb-1 pt-2.5 text-[10.5px] font-semibold uppercase tracking-[0.07em] text-[var(--n-400)]">
+                  {groupHeader}
+                </div>
+              ) : null}
+              <div
+                id={`${listboxId}-${index}`}
+                data-index={index}
+                role="option"
+                aria-selected={isSelected}
+                aria-disabled={option.disabled || undefined}
+                onMouseMove={() => {
+                  if (!option.disabled && activeIndex !== index) {
+                    setActiveIndex(index);
+                  }
+                }}
+                onClick={() => pick(option)}
+                className={unir(
+                  "flex cursor-pointer items-center gap-2 rounded-[7px] px-2.5 py-2",
+                  index === activeIndex && "bg-[var(--n-100)]",
+                  isSelected && "font-semibold text-[var(--accent-strong)]",
+                  option.value === "" && !isSelected && "text-[var(--n-500)]",
+                  option.disabled && "cursor-not-allowed opacity-50",
+                )}
+              >
+                <span className="min-w-0 flex-1">{option.label}</span>
+                {isSelected ? (
+                  <Icono nombre="elegida" grosor={2} className="size-4 shrink-0 text-[var(--accent)]" />
+                ) : null}
+              </div>
+            </React.Fragment>
+          );
+        })}
+      </Flotante>
     </>
   );
 }
