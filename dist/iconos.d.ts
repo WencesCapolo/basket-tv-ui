@@ -7,6 +7,9 @@ declare const TRAZOS: {
     readonly expandir: import("react").JSX.Element;
     readonly solicitudes: import("react").JSX.Element;
     readonly abajo: import("react").JSX.Element;
+    readonly izquierda: import("react").JSX.Element;
+    readonly derecha: import("react").JSX.Element;
+    readonly calendario: import("react").JSX.Element;
     readonly elegida: import("react").JSX.Element;
     readonly salir: import("react").JSX.Element;
 };
