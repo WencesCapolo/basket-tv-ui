@@ -5,7 +5,7 @@ import { CLASES_DE_CAMPO } from './campo.js';
 import { escribirValor, Flotante, useFlotante } from './flotante.js';
 import { Icono } from './iconos.js';
 import { unir } from './unir.js';
-const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+export const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const DIAS = ['lu', 'ma', 'mi', 'ju', 'vi', 'sá', 'do'];
 const aUtc = (fecha) => new Date(`${fecha}T00:00:00Z`);
 const deUtc = (d) => d.toISOString().slice(0, 10);

@@ -12,6 +12,7 @@ export type CampoDeFechaProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElemen
     placeholder?: string;
     variante?: VarianteDeCampo;
 };
+export declare const MESES: string[];
 /**
  * A date field with our own calendar, on every device. Used like
  * `<input type="date">`: `value`/`defaultValue` and `onChange(event)` with
