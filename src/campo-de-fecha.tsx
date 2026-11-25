@@ -23,7 +23,7 @@ export type CampoDeFechaProps = Omit<
     variante?: VarianteDeCampo;
   };
 
-const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+export const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const DIAS = ['lu', 'ma', 'mi', 'ju', 'vi', 'sá', 'do'];
 
 const aUtc = (fecha: string) => new Date(`${fecha}T00:00:00Z`);

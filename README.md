@@ -7,7 +7,7 @@ Estilos y marco compartidos de las apps de `basket-app.com` (Portal, Facturació
 - `CampanaDeSolicitudes`: la campana de Solicitudes de acceso y su modal, solo UI.
 - `MenuDeUsuario`: el usuario en el encabezado. Desde `sm`, el chip y el botón de salir; en el celular, las iniciales abren un menú con el nombre, el rol, **Elegir aplicación** y **Cerrar sesión**.
 - `Select`: el select del Portal: se usa como un `<select>` nativo, pero la lista abierta es propia, en la compu y en el celular.
-- `Campo`, `AreaDeTexto`, `CampoDeFecha`, `CampoConSugerencias`, `Casilla`, `CampoDeArchivo`: los demás campos de un formulario. Toda app arma sus formularios con estos y `Select`.
+- `Campo`, `AreaDeTexto`, `CampoDeFecha`, `CampoDeMes`, `CampoConSugerencias`, `Casilla`, `CampoDeArchivo`: los demás campos de un formulario. Toda app arma sus formularios con estos y `Select`.
 - `ChipDeUsuario`, `BotonDeSalir`, `urlDelLanzador`, `urlDeSolicitud`, `unir` (une clases y resuelve choques de Tailwind como el `cn` del Portal, con `tailwind-merge`).
 
 Requiere React 19 y Tailwind CSS 4.
@@ -17,7 +17,7 @@ Requiere React 19 y Tailwind CSS 4.
 Se instala como dependencia de git, fijada a un tag:
 
 ```json
-"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.8.0"
+"basket-tv-ui": "github:<owner>/basket-tv-ui#v0.9.0"
 ```
 
 `dist/` está commiteado: la instalación no compila nada.
@@ -160,6 +160,7 @@ Todos van con su etiqueta afuera (`<label>` o `aria-label`) y tienen `variante`:
 | `Campo` | `<input>` de texto, número, email, clave, búsqueda | Las mismas props. Se pinta con `--accent` cuando el navegador lo da por inválido. |
 | `AreaDeTexto` | `<textarea>` | Las mismas props. |
 | `CampoDeFecha` | `<input type="date">` | Calendario propio, lunes primero. `value` en `AAAA-MM-DD`, `onChange(e)` con `e.target.value`, `min`, `max`, `required`, `name`. "Hoy" y, si no es `required`, "Borrar". Teclado: flechas, Re Pág / Av Pág, Inicio / Fin, Enter, Escape. |
+| `CampoDeMes` | `<input type="month">` | Los doce meses de un año, flechas para cambiar de año. Muestra "Agosto 2026". `value` en `AAAA-MM`, `onChange(e)`, `min`, `max`, `required`, `name`. "Este mes" y, si no es `required`, "Borrar". Teclado: flechas, Re Pág / Av Pág (año), Inicio / Fin, Enter, Escape. |
 | `CampoConSugerencias` | `<input list>` + `<datalist>` | Las props de `Campo` más `sugerencias`. Muestra las que contienen lo escrito, sin importar tildes; se puede escribir otra cosa. Flechas y Enter eligen sin enviar el formulario. |
 | `Casilla` | `<input type="checkbox">` | `texto` al lado; sin texto, `aria-label`. |
 | `CampoDeArchivo` | `<input type="file">` | Zona para soltar un archivo y botón que abre el selector. `onArchivo(file)`, `accept`, `boton`; los hijos van arriba del botón. |
@@ -178,7 +179,7 @@ import { Campo, CampoConSugerencias, CampoDeFecha, Casilla } from 'basket-tv-ui'
 <Casilla texto="Deuda vencida" checked={deuda} onChange={(e) => setDeuda(e.target.checked)} />
 ```
 
-`Select`, `CampoDeFecha` y `CampoConSugerencias` abren el mismo panel flotante: en `<body>` o en el `<dialog>` abierto, arriba del cajón y de los modales.
+`Select`, `CampoDeFecha`, `CampoDeMes` y `CampoConSugerencias` abren el mismo panel flotante: en `<body>` o en el `<dialog>` abierto, arriba del cajón y de los modales.
 
 ## Desarrollo
 

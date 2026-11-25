@@ -8,6 +8,7 @@ export { AreaDeTexto, Campo } from './campo.js';
 export { CampoConSugerencias } from './campo-con-sugerencias.js';
 export { CampoDeArchivo } from './campo-de-archivo.js';
 export { CampoDeFecha } from './campo-de-fecha.js';
+export { CampoDeMes } from './campo-de-mes.js';
 export { Casilla } from './casilla.js';
 export { unir } from './unir.js';
 export { BotonDeVolver, destinoDeVolver } from './volver.js';

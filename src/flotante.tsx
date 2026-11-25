@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { unir } from './unir.js';
 
 // The floating panel under a field: the list of `Select` and
-// `CampoConSugerencias`, the calendar of `CampoDeFecha`.
+// `CampoConSugerencias`, the calendars of `CampoDeFecha` and `CampoDeMes`.
 
 interface Posicion {
   left: number;

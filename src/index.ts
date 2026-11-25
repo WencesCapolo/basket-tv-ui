@@ -13,6 +13,7 @@ export { AreaDeTexto, Campo, type AreaDeTextoProps, type CampoProps, type Varian
 export { CampoConSugerencias, type CampoConSugerenciasProps } from './campo-con-sugerencias.js';
 export { CampoDeArchivo, type CampoDeArchivoProps } from './campo-de-archivo.js';
 export { CampoDeFecha, type CampoDeFechaProps } from './campo-de-fecha.js';
+export { CampoDeMes, type CampoDeMesProps } from './campo-de-mes.js';
 export { Casilla, type CasillaProps } from './casilla.js';
 export { unir } from './unir.js';
 export { BotonDeVolver, destinoDeVolver, type DestinoDeVolver, type SeccionParaVolver } from './volver.js';
